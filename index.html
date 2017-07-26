@@ -1,0 +1,127 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Test online-shop</title>
+	<script src="app/core/jquery.min.js"></script>
+	<script src='app/core/angular.min.js'></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body ng-app="shop" ng-cloak >
+<header>
+	<div id="header">
+		<div class="col-md-12 col-lg-12 col-xs-12">
+			<div class="work-area">
+				<div class="logo"></div>
+			</div>
+		</div>
+	</div>
+</header>
+<div class="work-area">
+		<div class="col-md-12 col-lg-12 col-xs-12">
+			<h1>Для добавления товара,<br/>удерживайте его мышкой и перенесите в корзину </h1>
+		</div>
+		<div class="col-md-12 col-lg-12 col-xs-10 col-xs-offset-1 col-md-offset-0 col-lg-offset-0">
+			<div class="b-note"></div>
+		</div>
+		<!-----------Products start ---------->
+		<div class="col-md-6 col-lg-6 col-xs-6" ng-controller="shopCtrl">
+			<div class="b-items" droppable>
+				<div class="b-items_title" >
+					<p>Товары</p>
+				</div>
+				<div class="wrapper" ng-scrollbars>
+					<div class="col-md-12">
+						<!-----------Product item ---------->
+						<div class="b-items__item" ng-repeat="(k, it) in products" ng-if='it.quantity>0' draggable data-id="{{it.id}}" data-count="{{k}}" data-mode = '1'>
+							<img class="item-image" ng-if="it.image.src" ng-src="{{it.image.src}}" title="{{it.image.title}}" alt="{{it.image.title}}">
+							<div class="col-md-7">
+								<p class="item-name">{{it.name}}</p>
+								<p class="item-description" ng-if="it.description">
+									{{it.description | limitTo : 47}} ...
+								</p>
+							</div>
+							<div class="col-md-5">
+								<div class="item-add">
+									<div class="item-quantity__input">
+										<div class="item-add__minus" ng-click="changeQuantity(k,0,this)"></div>
+									{{it.q ? it.q : '1'}}
+										<div class="item-add__plus" ng-click="changeQuantity(k,1,this)"></div>
+									</div>
+									
+								</div>
+								<div class="item-price">
+									<p>{{it.q ? it.q : '1'}} x {{it.price}} <span class="rub">&#8399;</span></p>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="item-border"></div>
+							<p class="item-quantity__description">*Остаток товаров на складе : {{it.quantity - cartArray[k].q}}</p>
+						</div>
+						<!-----------Product item end ---------->
+					</div>					
+				</div>
+			</div>
+		</div>
+		<!-----------Products end ---------->
+
+		<!-----------Cart start ---------->
+		<div class="col-md-6 col-lg-6 col-xs-6" ng-controller="cartCtrl">		
+			<div class="b-cart" droppable>
+				<div class="b-cart_title">
+					<p >Корзина</p>
+				</div>
+				<div class="wrapper" ng-scrollbars>
+					<div class="col-md-12">
+						<div class="b-cart__empty" ng-show="!cartEmpty()"></div>
+						<!-----------Cart item ---------->
+						<div class="b-items__item" ng-repeat="(k, it) in cartArray" ng-if='it.quantity>0' draggable data-id="{{it.id}}" data-count="{{k}}" data-mode = '0'>
+							<div class="item-remove" ng-click='removeItem(k)'></div>
+							<img class="item-image" ng-if="it.image.src" ng-src="{{it.image.src}}" title="{{it.image.title}}" alt="{{it.image.title}}">
+							<div class="col-md-7">
+								<p class="item-name">{{it.name}}</p>
+								<p class="item-description" ng-if="it.description">
+									{{it.description | limitTo : 47}} ...
+								</p>
+							</div>
+							<div class="col-md-5">
+								<div class="item-add">
+									<div class="item-quantity__input">{{it.q ? it.q : '1'}}</div>
+								</div>
+								<div class="item-price">
+									<p>{{it.q ? it.q * it.price : it.price}} <span class="rub">&#8399;</span></p>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<!-----------Cart item end ---------->
+					</div>						
+				</div>
+				<div class="b-cart__total" ng-show="cartEmpty()">
+					<p>Итого : <span>{{total()}}</span> <span class="rub">&#8399;</span></p>
+				</div>				
+			</div>
+		</div>
+		<!-----------Cart end ---------->
+</div>
+<div class="clearfix"></div>
+
+<footer>
+	<div class="footer"></div>
+
+
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="app/template/css/style.css">
+
+	<link rel="stylesheet" href="app/core/jquery.mCustomScrollbar.min.css" type="text/css"/>
+	<script src="app/core/jquery.mCustomScrollbar.js"></script>
+	<script src="app/core/scrollbars.min.js"></script>
+
+	<script src='app/template/js/app.module.js'></script>
+	<script src='app/template/js/shop.ctrl.js'></script>
+	<script src='app/template/js/cart.ctrl.js'></script>
+	<script src='app/template/js/directives.js'></script>	
+</footer>
+</body>
+</html>
